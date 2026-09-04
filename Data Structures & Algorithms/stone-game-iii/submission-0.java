@@ -1,0 +1,28 @@
+class Solution {
+    int n;
+    int[] dp;
+    public String stoneGameIII(int[] stoneValue) {
+        n = stoneValue.length;
+        dp = new int[n];
+        Arrays.fill( dp , Integer.MIN_VALUE);
+        int res = dfs( 0, stoneValue);
+        if( res == 0 ) return "Tie";
+        return res < 0 ? "Bob" : "Alice";
+    }
+    private int dfs( int i, int[] stoneValue){
+        if( i >= n ){
+            return 0;
+        }
+        if( dp[i] != Integer.MIN_VALUE){
+            return dp[i];
+        }
+        int res  = Integer.MIN_VALUE;
+        int total = 0;
+        for( int j = i; j < Math.min( i+3, n); j++){
+            total += stoneValue[j];
+            res = Math.max( res, total - dfs(j+1, stoneValue));
+        }
+        dp[i] = res;
+        return res;
+    }
+}
